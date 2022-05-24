@@ -31,13 +31,16 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def hello():
+    """
+    exemple de requête : http://127.0.0.1:5000
+    """
     return "Hello World!"
 
 @app.route("/clients/", methods=['GET'])
-def clients(X):
+def clients():
     """
     Renvoie la liste des identifiants uniques des dossiers clients : SK_ID_CURR
-    exemple de requête : http://127.0.0.1:5000/clients/
+    exemple de requête : http://127.0.0.1:5000/clients
     """
     # Limitons la liste à 10 ID pour le développement :
     ids = X.index.to_list()[:10]
@@ -45,10 +48,20 @@ def clients(X):
         'ids' : ids
         })
 
-@app.route('/predict/<int:id>/', methods=['GET'])
+@app.route("/clients/<int:id>", methods=['GET'])
+def details_client(id):
+    """
+    Renvoie l'ensemble des informations d'un dossier client.
+    exemple de requête : http://127.0.0.1:5000/clients/161095
+    """
+    # Limitons la liste à 10 ID pour le développement :
+    dossier_client = X.loc[[id]]
+    return dossier_client.to_json()
+
+@app.route('/predict/<int:id>', methods=['GET'])
 def predict(id):
     """
-    exemple de requête : http://127.0.0.1:5000/predict/4130033/
+    exemple de requête : http://127.0.0.1:5000/predict/413003
     
     Returns
     -------
