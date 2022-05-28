@@ -7,9 +7,13 @@ Created on Fri May 20 14:38:41 2022
 Formation Data Scientist OpenClassrooms - Projet n°7 
 """
 import os
-from flask import Flask, jsonify #, request , render_template
+from flask import Flask, jsonify, send_file #, request , render_template
 import pandas as pd
 import joblib
+from io import BytesIO
+from matplotlib.figure import Figure
+import seaborn as sns
+
 # import requests
 
 # Variables
@@ -54,9 +58,43 @@ def details_client(id):
     Renvoie l'ensemble des informations d'un dossier client.
     exemple de requête : http://127.0.0.1:5000/clients/161095
     """
-    # Limitons la liste à 10 ID pour le développement :
     dossier_client = X.loc[[id]]
     return dossier_client.to_json()
+
+@app.route("/stats/<int:id>/<variable>", methods=['GET'])
+def distribution_client(id, variable):
+    """
+    Renvoie une image contenant un graphique de la distribution d'une variable
+    reçue en paramètre, avec la situation du client par rapport à la distribution.
+    Renvoie plusieurs graphiques dans une imagen si plusieurs variables sont
+    fournies.
+
+    exemple de requête : http://127.0.0.1:5000/stats/161095/DAYS_BIRTH
+    """
+    # Generate the figure **without using pyplot** by using Figure
+    fig = Figure(figsize=(7,4))
+    ax = fig.subplots()
+    sns.histplot(
+                data=df,
+                x=variable,
+                hue="TARGET",
+                cumulative=False,
+                multiple='stack',
+                legend=False,
+                ax=ax)
+    ax.axvline(x=df.loc[[id],[variable]].values[0][0], color='red', lw=2, linestyle='--', label='client')
+    fig.legend(loc='upper left',
+               fontsize='small',
+               bbox_to_anchor=(0.13, 0.88),
+               labels=[f'Dossier client {id}', 'Défauts de paiement', 'Remboursements réussis'])
+    fig.suptitle(f"Positionnement du client dans la distribution de \n{variable}")
+    bytes_image = BytesIO()
+    fig.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return send_file(bytes_image,
+                     download_name='plot.png',
+                     as_attachment=False,
+                     mimetype='image/png')
 
 @app.route('/predict/<int:id>', methods=['GET'])
 def predict(id):
