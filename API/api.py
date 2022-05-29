@@ -17,7 +17,7 @@ import seaborn as sns
 # import requests
 
 # Variables
-data_dir    = '.data'
+data_dir    = 'data'
 data_prod   = 'data_prod.ftr'
 modele_prod = 'modele_api.joblib'
 
