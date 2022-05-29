@@ -15,7 +15,7 @@ import pandas as pd
 # import numpy as np
 
 # Définition de variables
-logo = 'static/logo.png'
+logo = 'Dashboard/static/logo.png'
 # url_api = 'http://127.0.0.1:5000'
 url_api = 'http://cpsolutions.eu.pythonanywhere.com'
 endpoint_id_clients = url_api + '/clients/'
