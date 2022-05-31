@@ -17,7 +17,7 @@ import pandas as pd
 # Définition de variables
 logo = 'Dashboard/static/logo.png'
 # url_api = 'http://127.0.0.1:5000'
-url_api = 'http://cpsolutions.eu.pythonanywhere.com'
+url_api = 'https://api-p7-ocr.herokuapp.com'
 endpoint_id_clients = url_api + '/clients/'
 endpoint_data_client = endpoint_id_clients
 endpoint_stats = url_api + '/stats/'
@@ -194,7 +194,3 @@ else:
             for variable in col_niv_info_2:
                 graphique_comparatif = recup_stats_client(endpoint_stats, num_dossier_client, variable)
                 st.image(graphique_comparatif, caption=f'Distribution de {variable}', use_column_width='auto')
-                
-# Affichage d'informations de débugage
-# st.session_state
-# st.write(affichage_resultats)

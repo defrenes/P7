@@ -14,8 +14,6 @@ from io import BytesIO
 from matplotlib.figure import Figure
 import seaborn as sns
 
-# import requests
-
 # Variables
 data_dir    = 'data'
 data_prod   = 'data_prod.ftr'
@@ -27,16 +25,15 @@ df = pd.read_feather(os.path.join(data_dir, data_prod))
 df.set_index(df.SK_ID_CURR, drop=True, inplace=True, verify_integrity=True)
 var_non_predictives = ["index", "SK_ID_CURR", "SK_ID_BUREAU", "SK_ID_PREV", "TARGET"] 
 var_predictives = [col for col in df.columns if col not in var_non_predictives]
-
 X = df[var_predictives]
-
 
 app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def hello():
     """
-    exemple de requête : http://127.0.0.1:5000
+    Route basique pour vérifier le bon fonctionnement de l'API.
+    Exemple de requête : http://127.0.0.1:5000
     """
     return "Hello World!"
 
@@ -44,10 +41,10 @@ def hello():
 def clients():
     """
     Renvoie la liste des identifiants uniques des dossiers clients : SK_ID_CURR
-    exemple de requête : http://127.0.0.1:5000/clients
+    Exemple de requête : http://127.0.0.1:5000/clients
     """
-    # Limitons la liste à 10 ID pour le développement :
-    ids = X.index.to_list()[:10]
+    # Limitation de la liste à 10 ID pour le développement : ids = X.index.to_list()[:10]
+    ids = X.index.to_list()
     return jsonify({
         'ids' : ids
         })
@@ -56,7 +53,7 @@ def clients():
 def details_client(id):
     """
     Renvoie l'ensemble des informations d'un dossier client.
-    exemple de requête : http://127.0.0.1:5000/clients/161095
+    Exemple de requête : http://127.0.0.1:5000/clients/161095
     """
     dossier_client = X.loc[[id]]
     return dossier_client.to_json()
@@ -66,10 +63,7 @@ def distribution_client(id, variable):
     """
     Renvoie une image contenant un graphique de la distribution d'une variable
     reçue en paramètre, avec la situation du client par rapport à la distribution.
-    Renvoie plusieurs graphiques dans une imagen si plusieurs variables sont
-    fournies.
-
-    exemple de requête : http://127.0.0.1:5000/stats/161095/DAYS_BIRTH
+    Exemple de requête : http://127.0.0.1:5000/stats/161095/DAYS_BIRTH
     """
     # Generate the figure **without using pyplot** by using Figure
     fig = Figure(figsize=(7,4))
@@ -99,19 +93,13 @@ def distribution_client(id, variable):
 @app.route('/predict/<int:id>', methods=['GET'])
 def predict(id):
     """
+    Prédiction du défaut de paiement ou non d'un dossier client.
+    Retourne au format JSON le numéro de dosser, son score sur 100 et la classe (0 validé/1 refusé).
     exemple de requête : http://127.0.0.1:5000/predict/413003
-    
-    Returns
-    -------
-    id : int
-        Numéro du dossier
-    TYPE
-        DESCRIPTION.
     """
     donnees_client = X.loc[[id]]
     score_client = 100 * modele.predict_proba(donnees_client)[0][1]
     prediction = modele.predict(donnees_client)[0]
-
     return jsonify({
         'id': id,
         'score' : score_client,
