@@ -30,20 +30,25 @@ Parmis les 7 tables de la base de données, on en trouve 2 qui contiennent des i
 Les fichiers du projet sont structurés de la façon suivante :
 ```
 Racine du projet
-├── API                         Dossier projet spécifique à l'API.
-│   ├── api.py                  Code source de l'API.
-│   ├── data                    Dossier data contenant les données nécessaires à l'API.
-│   │   ├── data_prod.ftr       DataFrame des données sérialisées au format Feather.
-│   │   └── modele_api.joblib   Modèle prédictif sérialisé au format joblib.
-│   ├── Procfile                Fichier de configuration WSGI de Herokuapp.
-│   ├── requirements.txt        Fichier de configuration Herokuapp : versions de librairies nécessaires.
-│   └── runtime.txt             Fichier de configuration avec la version de Python pour Herokuapp.
-├── Dashboard                   Dossier projet spécifique au tableau de bord.
-│   ├── dashboard.py            Code source du tableau de bord.
-│   └── static                  Dossier pour les fichiers statiques du tableau de bord.
-│       └── logo.png            Logo de la société "Prêt à dépenser".
-├── LICENSE                     Fichier de license.
-└── README.md                   Fichier de présentation du projet.
+├── API                             Dossier projet spécifique à l'API.
+│   ├── api.py                      Code source de l'API.
+│   ├── data                        Dossier data contenant les données nécessaires à l'API.
+│   │   ├── data_prod.ftr           DataFrame des données sérialisées au format Feather.
+│   │   └── modele_api.joblib       Modèle prédictif sérialisé au format joblib.
+│   ├── Procfile                    Fichier de configuration WSGI de Herokuapp.
+│   ├── requirements.txt            Fichier de configuration Herokuapp : versions de librairies nécessaires.
+│   └── runtime.txt                 Fichier de configuration avec la version de Python pour Herokuapp.
+├── Dashboard                       Dossier projet spécifique au tableau de bord.
+│   ├── dashboard.py                Code source du tableau de bord.
+│   └── static                      Dossier pour les fichiers statiques du tableau de bord.
+│       └── logo.png                Logo de la société "Prêt à dépenser".
+├── Modelisation                    Dossier regroupant les Notebooks Jupyter.
+│   ├── P7_01_EDA.ipynb             Notebook d'analyse exploratoire.
+│   ├── P7_02_Pretraitements.ipynb  Notebook des prétraitements.
+│   └── P7_03_Modelisation.ipynb    Notebook de modélisation.
+├── Dashboard                       Dossier projet spécifique au tableau de bord.
+├── LICENSE                         Fichier de license.
+└── README.md                       Fichier de présentation du projet.
 ```
 
 ## Démonstration
